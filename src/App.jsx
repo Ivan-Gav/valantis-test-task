@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import useAPI from "./hooks/useAPI";
 import Pagination from "./components/Pagination/Pagination";
+import ProductList from "./components/ProductList/ProductList";
 
 const QTY_PER_PAGE = 50;
 
 function App() {
   const [ids, setIds] = useState([]);
   const [page, setPage] = useState(1);
+  const [items, setItems] = useState([]);
 
-  const { getIDs } = useAPI();
+  const { getIDs, getItems, isFetching } = useAPI();
 
   useEffect(() => {
     getIDs().then((result) => {
@@ -18,6 +20,19 @@ function App() {
       console.log(`got ${uniqueIds.length} ids`);
     });
   }, [getIDs]);
+
+  useEffect(() => {
+    if (!!ids && ids.length) {
+      const idsToDisplay = ids.slice(
+        (page - 1) * QTY_PER_PAGE,
+        page * QTY_PER_PAGE
+      );
+      getItems(idsToDisplay).then((result) => {
+        console.log(result);
+        setItems(result);
+      });
+    }
+  }, [ids, page, getItems]);
 
   const onPageChange = (page) => {
     setPage(page);
@@ -29,6 +44,8 @@ function App() {
   return (
     <>
       <h1>Hello Valantis!</h1>
+      {isFetching && <h2>Loading...</h2>}
+      {!isFetching && !!items.length && <ProductList ids={items} />}
       {!!ids.length && totalPages > 1 && (
         <Pagination
           page={page}
