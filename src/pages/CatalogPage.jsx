@@ -1,55 +1,36 @@
-import { useEffect, useState } from "react";
-import useAPI from "../hooks/useAPI";
 import Pagination from "../components/Pagination/Pagination";
 import ProductList from "../components/ProductList/ProductList";
-
-const QTY_PER_PAGE = 50;
+import useProductIDs from "../hooks/useProductIDs";
+import usePagination from "../hooks/usePagination";
+import useProducts from "../hooks/useProducts";
 
 function CatalogPage() {
-  const [ids, setIds] = useState([]);
-  const [page, setPage] = useState(1);
-  const [items, setItems] = useState([]);
+  const {
+    ids,
+    isFetching: isIDsFetching,
+    isError: isIDsError,
+  } = useProductIDs();
+  const { page, setPage, totalPages, idsToDisplay } = usePagination(ids);
+  const { products, isFetching, isError } = useProducts(idsToDisplay);
 
-  const { getIDs, getItems, isFetching } = useAPI();
-
-  useEffect(() => {
-    getIDs().then((result) => {
-      const uniqueIds = [...new Set(result)];
-      setIds(uniqueIds);
-      console.log(`got ${uniqueIds.length} ids`);
-    });
-  }, [getIDs]);
-
-  useEffect(() => {
-    if (!!ids && ids.length) {
-      const idsToDisplay = ids.slice(
-        (page - 1) * QTY_PER_PAGE,
-        page * QTY_PER_PAGE
-      );
-      getItems(idsToDisplay).then((result) => {
-        console.log(result);
-        setItems(result);
-      });
-    }
-  }, [ids, page, getItems]);
-
-  const onPageChange = (page) => {
-    setPage(page);
-    console.log(`go to ${page}`);
+  const display = {
+    error: (isIDsError || isError) && !(isIDsFetching || isFetching),
+    loader: !(isIDsError || isError) && (isIDsFetching || isFetching),
+    products: !(isIDsError || isError || isIDsFetching || isFetching) && !!products.length,
+    pagination: !(isIDsError || isError || isIDsFetching) && totalPages > 1,
   };
-
-  const totalPages = Math.ceil(ids.length / QTY_PER_PAGE);
 
   return (
     <>
       <h1>Hello Valantis!</h1>
-      {isFetching && <h2>Loading...</h2>}
-      {!isFetching && !!items.length && <ProductList ids={items} />}
-      {!!ids.length && totalPages > 1 && (
+      {display.error && <h2>An Error occured. please try again</h2>}
+      {display.loader && <h2>Loading...</h2>}
+      {display.products && <ProductList ids={products} />}
+      {display.pagination && (
         <Pagination
           page={page}
           totalPages={totalPages}
-          onPageChange={onPageChange}
+          onPageChange={setPage}
         />
       )}
     </>
