@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import s from './Pagination.module.css';
 
 export default function Pagination(props) {
   const { page, totalPages, onPageChange } = props;
@@ -30,7 +31,7 @@ export default function Pagination(props) {
   };
 
   return (
-    <div>
+    <div className={s.pagination_container}>
       <button disabled={disabled.first} onClick={() => onClick(1)}>
         First
       </button>
@@ -38,7 +39,7 @@ export default function Pagination(props) {
         Prev
       </button>
 
-      <form onSubmit={onSubmit}>
+      <form className={s.pagination_curr_page} onSubmit={onSubmit}>
         <input
           type="number"
           value={currPage}

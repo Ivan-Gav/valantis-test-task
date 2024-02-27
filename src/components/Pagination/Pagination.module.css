@@ -1,0 +1,9 @@
+.pagination_container,
+.pagination_curr_page {
+  display: flex;
+  align-items: center;
+}
+
+.pagination_container {
+  justify-content: center;
+}

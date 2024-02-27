@@ -1,9 +1,10 @@
 import { Fragment } from 'react';
+import s from './ProductList.module.css';
 
 export default function ProductList(props) {
   const { ids } = props;
   return (
-    <div>
+    <div className={s.list_container}>
         <div>ID</div>
         <div>Product</div>
         <div>Brand</div>
@@ -11,10 +12,10 @@ export default function ProductList(props) {
       {ids.map((item) => {
       return (
         <Fragment key={item.id}>
-         <div>{item.id}</div>
-         <div>{item.product}</div>
-         <div>{item.brand}</div>
-         <div>{item.price}</div>
+         <div className={s.cell_id}>{item.id}</div>
+         <div className={s.cell_product}>{item.product}</div>
+         <div className={s.cell_brand}>{item.brand}</div>
+         <div className={s.cell_price}>{item.price}</div>
         </Fragment>
       )
     })}

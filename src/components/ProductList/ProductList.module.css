@@ -1,0 +1,14 @@
+.list_container {
+  display: grid;
+  grid-template-columns: 3fr 3fr 1fr 1fr;
+}
+
+.cell_id,
+.cell_product {
+  text-align: left;
+}
+
+.cell_price {
+  text-align: right;
+}
+
