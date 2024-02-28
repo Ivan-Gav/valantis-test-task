@@ -4,12 +4,14 @@ import { getFilteredIDs } from "../api/api";
 export default function useFilter() {
   const [filteredIDs, setFilteredIDs] = useState([]);
   const [activeField, setActiveField] = useState("product");
+  const [filterOn, setFilterOn] = useState(false);
 
   const abortRef = useRef(null);
 
   const filterIDs = async (field, value) => {
-    abortRef.current?.abort()
-    abortRef.current = new AbortController()
+    setFilterOn(true);
+    abortRef.current?.abort();
+    abortRef.current = new AbortController();
     setFilteredIDs([]);
     getFilteredIDs(field, value, abortRef)
       .then((data) => {
@@ -24,11 +26,12 @@ export default function useFilter() {
   };
 
   const resetFilter = () => {
-    console.log('reset')
+    console.log("reset");
     abortRef.current?.abort();
     setFilteredIDs([]);
     setActiveField("product");
+    setFilterOn(false);
   };
 
-  return { filteredIDs, filterIDs, activeField, setActiveField, resetFilter };
+  return { filteredIDs, filterIDs, activeField, setActiveField, resetFilter, filterOn };
 }

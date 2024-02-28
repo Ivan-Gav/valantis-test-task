@@ -6,8 +6,6 @@ export default function useProductIDs() {
   const [isError, setIsError] = useState(null);
   const [ids, setIds] = useState([]);
 
-  // const { getIDs, isFetching } = useAPI();
-
   useEffect(() => {
     setIsFetching(true);
     getIDs()

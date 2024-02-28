@@ -76,6 +76,9 @@ export const getFields = async (field) => {
 }
 
 export const getFilteredIDs = async (field, value, abortRef) => {
+  if (field !== 'product' && !isNaN(value)) {
+    value = Number(value)
+  }
   const { data } = await axios.post(
     API_URL,
     {

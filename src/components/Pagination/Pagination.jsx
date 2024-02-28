@@ -41,6 +41,8 @@ export default function Pagination(props) {
 
       <form className={s.pagination_curr_page} onSubmit={onSubmit}>
         <input
+          id="current_page"
+          name="current_page"
           type="number"
           value={currPage}
           onChange={(e) => setCurrPage(e.target.value)}
