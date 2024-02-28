@@ -57,3 +57,38 @@ export const getItems = async (ids) => {
   console.log(`Got ${result.length} products`);
   return result;
 };
+
+export const getFields = async (field) => {
+  const { data } = await axios.post(
+    API_URL,
+    {
+      action: "get_fields",
+      params: { field: field },
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "X-Auth": md5(`${API_KEY}_${timestamp}`),
+      },
+    }
+  );
+  return data.result;
+}
+
+export const getFilteredIDs = async (field, value, abortRef) => {
+  const { data } = await axios.post(
+    API_URL,
+    {
+      action: "filter",
+      params: { [field]: value }
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "X-Auth": md5(`${API_KEY}_${timestamp}`),
+      },
+      signal: abortRef.current.signal
+    }
+  );
+  return data.result;
+};
