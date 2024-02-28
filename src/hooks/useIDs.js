@@ -1,57 +1,33 @@
-import { useEffect, useState, useRef } from "react";
-import { getIDs, getFilteredIDs } from "../api/api";
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getFilteredIDs } from "../api/api";
 
 export default function useIDs() {
-  const [isFetching, setIsFetching] = useState(false);
-  const [isError, setIsError] = useState(null);
-  const [ids, setIds] = useState([]);
   const [activeField, setActiveField] = useState("product");
-  const [filterOn, setFilterOn] = useState(false);
+  const [search, setSearch] = useState('');
 
-  const abortRef = useRef(null);
+  const { data, isLoading, refetch } = useQuery({
+    queryFn: () => getFilteredIDs(activeField, search),
+    queryKey: ['ids'],
+    onError: (err) => console.log(err.message)
+  })
 
   useEffect(() => {
-    if (!filterOn) {
-      setIsFetching(true);
-      getIDs()
-      .then((result) => {
-        const uniqueIds = [...new Set(result)];
-        setIds(uniqueIds);
-        console.log(`got ${uniqueIds.length} ids`);
-      })
-      .catch((error) => {
-        console.log(error.message);
-        setIsError(error);
-      })
-      .finally(() => setIsFetching(false));
+    if (data) {
+      console.log(`fetched ${data.length} ids`)
+    } else {
+      console.log('ids undefined')
     }
+    
+  }, [data])
 
-  }, [filterOn]);
+  // const resetFilter = () => {
+  //   setActiveField("product");
+  //   setSearch('');
+  //   refetch();
+  // };
 
-  const filterIDs = async (field, value) => {
-    setFilterOn(true);
-    abortRef.current?.abort();
-    abortRef.current = new AbortController();
-    setIds([]);
-    getFilteredIDs(field, value, abortRef)
-      .then((result) => {
-        const data = [...new Set(result)];
-        setIds(data);
-        console.log(`Result length ${data.length}`);
-        return data;
-      })
-      .catch((e) => {
-        console.log(e.message);
-      });
-  };
+  const ids = data || []
 
-  const resetFilter = () => {
-    console.log("reset");
-    abortRef.current?.abort();
-    setIds([]);
-    setActiveField("product");
-    setFilterOn(false);
-  };
-
-  return { ids, isFetching, isError, filterIDs, activeField, setActiveField, resetFilter, filterOn };
+  return { ids, isLoading, activeField, setActiveField, search, setSearch, refetch };
 }

@@ -54,7 +54,6 @@ export const getItems = async (ids) => {
     }
   );
   const result = getFilteredIdDublicates(data.result, ids.length);
-  console.log(`Got ${result.length} products`);
   return result;
 };
 
@@ -72,26 +71,30 @@ export const getFields = async (field) => {
       },
     }
   );
-  return data.result;
-}
+  const result =
+    typeof data.result[0] === "number"
+      ? [...new Set(data.result)].sort((a, b) => a - b)
+      : [...new Set(data.result)].sort();
+  return result;
+};
 
-export const getFilteredIDs = async (field, value, abortRef) => {
-  if (field !== 'product' && !isNaN(value)) {
-    value = Number(value)
-  }
+export const getFilteredIDs = async (field, value) => {
+  const reqField = value ? field : "product";
+  const reqValue = field !== "product" && !isNaN(value) && Number(value) !== 0 ? Number(value) : value;
+
   const { data } = await axios.post(
     API_URL,
     {
       action: "filter",
-      params: { [field]: value }
+      params: { [reqField]: reqValue },
     },
     {
       headers: {
         "Content-Type": "application/json",
         "X-Auth": md5(`${API_KEY}_${timestamp}`),
       },
-      signal: abortRef.current.signal
     }
   );
-  return data.result;
+  const result = [...new Set(data.result)];
+  return result;
 };

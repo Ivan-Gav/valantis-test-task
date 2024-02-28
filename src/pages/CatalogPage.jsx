@@ -1,6 +1,6 @@
+import { useEffect } from 'react';
 import Pagination from "../components/Pagination/Pagination";
 import ProductList from "../components/ProductList/ProductList";
-// import useProductIDs from "../hooks/useProductIDs";
 import useIDs from "../hooks/useIDs";
 
 import usePagination from "../hooks/usePagination";
@@ -10,33 +10,45 @@ import ProductFilter from "../components/ProductFilter/ProductFilter";
 function CatalogPage() {
   const {
     ids,
-    isFetching: isIDsFetching,
-    isError: isIDsError,
-    filterIDs,
+    isLoading: isIDsFetching,
     activeField,
     setActiveField,
-    resetFilter,
+    // resetFilter,
+    search,
+    setSearch,
+    refetch,
   } = useIDs();
   const { page, setPage, totalPages, idsToDisplay } = usePagination(ids);
-  const { products, isFetching, isError } = useProducts(idsToDisplay);
+  const { products, isLoading } = useProducts(idsToDisplay);
+
+  useEffect(() => console.log(`ids changed and ids.length=${ids.length}`), [ids]);
+  useEffect(() => console.log(`products changed and products.length=${products.length}`), [products]);
+  useEffect(() => console.log(`idsToDisplay changed and idsToDisplay.length=${idsToDisplay.length}`), [idsToDisplay]);
 
   const display = {
-    error: (isIDsError || isError) && !(isIDsFetching || isFetching),
-    loader: !(isIDsError || isError) && (isIDsFetching || isFetching),
-    products:
-      !(isIDsError || isError || isIDsFetching || isFetching) &&
-      !!products.length,
-    pagination: !(isIDsError || isError || isIDsFetching) && totalPages > 1,
+    loader: isIDsFetching || isLoading,
+    products: !(isIDsFetching || isLoading) && !!ids.length && !!products.length,
+    notFound: !(isIDsFetching || isLoading) && (!ids.length || !products.length),
+    pagination: !isIDsFetching && totalPages > 1,
   };
 
-  const filterProps = { ids, filterIDs, activeField, setActiveField, resetFilter };
+  const filterProps = {
+    ids,
+    activeField,
+    setActiveField,
+    // resetFilter,
+    search,
+    setSearch,
+    refetch,
+    setPage,
+  };
 
   return (
     <>
       <h1>Hello Valantis!</h1>
-      <ProductFilter {...filterProps}/>
-      {display.error && <h2>An Error occured. please try again</h2>}
+      <ProductFilter {...filterProps} />
       {display.loader && <h2>Loading...</h2>}
+      {display.notFound && <h2>Nothing found</h2>}
       {display.products && <ProductList ids={products} />}
       {display.pagination && (
         <Pagination

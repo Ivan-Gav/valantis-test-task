@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import s from './Pagination.module.css';
+import s from "./Pagination.module.css";
 
 export default function Pagination(props) {
   const { page, totalPages, onPageChange } = props;
   const [currPage, setCurrPage] = useState(page);
 
   useEffect(() => {
-    setCurrPage(page)
-  }, [page])
+    setCurrPage(page);
+  }, [page]);
 
   const onClick = (page) => {
     onPageChange(Number(page));

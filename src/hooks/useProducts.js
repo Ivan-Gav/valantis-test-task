@@ -1,27 +1,15 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getItems } from "../api/api"; 
 
 export default function useProducts(ids) {
-  const [products, setProducts] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
-  const [isError, setIsError] = useState(null);
 
-  useEffect(() => {
-    if ((ids !== undefined) && ids.length) {
-      setIsFetching(true);
-      getItems(ids)
-        .then((result) => {
-          setProducts(result);
-        })
-        .catch((error) => {
-          console.log(error.message);
-          setIsError(error);
-        })
-        .finally(() => {
-          setIsFetching(false);
-        });
-    }
-  }, [ids]);
+  const { data, isLoading } = useQuery({
+    queryFn: () => getItems(ids),
+    queryKey: ['products', ids]
+  })
 
-  return { products, isFetching, isError };
+  const products = data || [];
+
+  return { products, isLoading };
 }

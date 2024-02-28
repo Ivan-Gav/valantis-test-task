@@ -1,30 +1,33 @@
-import { useState } from "react";
 import useFields from "../../hooks/useFields";
-// import useMotherfucker from "../../hooks/useMotherfucker";
 
 export default function ProductFilter(props) {
- const { ids, filterIDs, activeField, setActiveField, resetFilter } = props;
-  const [search, setSearch] = useState("");
-  // const { filteredIDs, filterIDs, activeField, setActiveField, resetFilter } =
-  //   useMotherfucker();
+  const {
+    activeField,
+    setActiveField,
+    search,
+    setSearch,
+    refetch,
+    setPage
+  } = props;
   const { fields } = useFields(activeField);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    const value = data.get(activeField);
-    console.log(`${activeField}: ${value}`);
-    filterIDs(activeField, value).then(() => console.log(ids));
+    if (search) { setPage(1) }
+    console.log(`Search ${activeField}: ${search}`);
+    refetch();
+    setSearch("");
+    setActiveField("product");
   };
 
   const onResetClick = () => {
-    setSearch("");
-    resetFilter();
+    setActiveField("product");
+    setSearch('');
+    refetch();
   };
 
   const onSelectChange = (e) => {
     setSearch("");
-    resetFilter();
     setActiveField(e.target.value);
   };
 
