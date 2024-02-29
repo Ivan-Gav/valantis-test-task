@@ -6,26 +6,16 @@ export default function useIDs() {
   const [activeField, setActiveField] = useState("product");
   const [search, setSearch] = useState('');
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch, error } = useQuery({
     queryFn: () => getFilteredIDs(activeField, search),
     queryKey: ['ids'],
-    onError: (err) => console.log(err.message)
   })
 
   useEffect(() => {
-    if (data) {
-      console.log(`fetched ${data.length} ids`)
-    } else {
-      console.log('ids undefined')
+    if (error) {
+      console.log(`К сожалению после нескольких попыток загрузки ошибка остается: ${error.message}`)
     }
-    
-  }, [data])
-
-  // const resetFilter = () => {
-  //   setActiveField("product");
-  //   setSearch('');
-  //   refetch();
-  // };
+  }, [error])
 
   const ids = data || []
 

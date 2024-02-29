@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import Pagination from "../components/Pagination/Pagination";
 import ProductList from "../components/ProductList/ProductList";
 import useIDs from "../hooks/useIDs";
@@ -21,9 +21,9 @@ function CatalogPage() {
   const { page, setPage, totalPages, idsToDisplay } = usePagination(ids);
   const { products, isLoading } = useProducts(idsToDisplay);
 
-  useEffect(() => console.log(`ids changed and ids.length=${ids.length}`), [ids]);
-  useEffect(() => console.log(`products changed and products.length=${products.length}`), [products]);
-  useEffect(() => console.log(`idsToDisplay changed and idsToDisplay.length=${idsToDisplay.length}`), [idsToDisplay]);
+  // useEffect(() => console.log(`ids changed and ids.length=${ids.length}`), [ids]);
+  // useEffect(() => console.log(`products changed and products.length=${products.length}`), [products]);
+  // useEffect(() => console.log(`idsToDisplay changed and idsToDisplay.length=${idsToDisplay.length}`), [idsToDisplay]);
 
   const display = {
     loader: isIDsFetching || isLoading,
