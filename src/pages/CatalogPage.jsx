@@ -8,6 +8,7 @@ import useIDs from "../hooks/useIDs";
 import usePagination from "../hooks/usePagination";
 import useProducts from "../hooks/useProducts";
 import ProductFilter from "../components/ProductFilter/ProductFilter";
+import FilterTags from "../components/ProductFilter/FilterTags";
 
 function CatalogPage() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -57,9 +58,12 @@ function CatalogPage() {
 
   return (
     <>
-      <h1>Hello Valantis!</h1>
-      <button onClick={() => setIsDrawerOpen(true)}>Фильтр</button>
-      {!!filterBy && <button onClick={clearFilter}>{filterBy} x</button>}
+      <h1>Valantis Test Task</h1>
+      <FilterTags
+        onFilterClick={() => setIsDrawerOpen(true)}
+        onClearClick={clearFilter}
+        filterBy={filterBy}
+      />
       <Drawer
         open={isDrawerOpen}
         onClose={closeDrawer}
