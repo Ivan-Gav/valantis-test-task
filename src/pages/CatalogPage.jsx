@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
+import s from "./CatalogPage.module.css";
 import Pagination from "../components/Pagination/Pagination";
 import ProductList from "../components/ProductList/ProductList";
 import useIDs from "../hooks/useIDs";
@@ -9,6 +10,7 @@ import usePagination from "../hooks/usePagination";
 import useProducts from "../hooks/useProducts";
 import ProductFilter from "../components/ProductFilter/ProductFilter";
 import FilterTags from "../components/ProductFilter/FilterTags";
+import Loading from "../ui/Loading/Loading";
 
 function CatalogPage() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -56,8 +58,17 @@ function CatalogPage() {
     closeDrawer,
   };
 
+  const NotFound = () => {
+    return (
+      <>
+        <h2>Товары не найдены</h2>
+        <p>Попробуйте изменить параметры поиска</p>
+      </>
+    );
+  };
+
   return (
-    <>
+    <main className={s.page}>
       <h1>Valantis Test Task</h1>
       <FilterTags
         onFilterClick={() => setIsDrawerOpen(true)}
@@ -73,8 +84,8 @@ function CatalogPage() {
       >
         <ProductFilter {...filterProps} />
       </Drawer>
-      {display.loader && <h2>Loading...</h2>}
-      {display.notFound && <h2>Nothing found</h2>}
+      {display.loader && <Loading />}
+      {display.notFound && <NotFound />}
       {display.products && <ProductList ids={products} />}
       {display.pagination && (
         <Pagination
@@ -84,7 +95,7 @@ function CatalogPage() {
           isLoading={isLoading}
         />
       )}
-    </>
+    </main>
   );
 }
 
