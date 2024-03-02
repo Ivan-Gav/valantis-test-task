@@ -1,0 +1,57 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1rem;
+  border: none;
+  border-radius: 1rem;
+  background-color: var(--color-bg-2);
+  overflow: hidden;
+}
+
+.product,
+.brand,
+.id {
+  margin: 0;
+  text-align: left;
+}
+
+.product {
+  font-size: 1.1rem;
+}
+
+.brand {
+  font-size: 1.1rem;
+  color: var(--color-brand);
+  flex-grow: 1;
+}
+
+.card_footer {
+  display: flex;
+  align-items: baseline;
+}
+
+.id {
+  font-size: 0.8rem;
+  color: var(--color-txt-dim);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.id:hover {
+  overflow: visible;
+}
+
+.price {
+  margin: 0;
+  text-align: left;
+  font-size: 1.1rem;
+  font-weight: bold;
+  white-space: nowrap;
+  color: var(--color-brand);
+}
+
+.price span {
+  font-weight: normal;
+}
