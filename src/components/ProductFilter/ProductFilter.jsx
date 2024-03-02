@@ -1,4 +1,13 @@
 import useFields from "../../hooks/useFields";
+import s from "./ProductFilter.module.css";
+import FilterItem from "./FilterItem";
+import CloseButton from "../../ui/CloseButton/CloseButton";
+
+const LABELS = {
+  product: "Наименование",
+  brand: "Бренд",
+  price: "Цена",
+};
 
 export default function ProductFilter(props) {
   const {
@@ -6,24 +15,29 @@ export default function ProductFilter(props) {
     setActiveField,
     search,
     setSearch,
+    setFilterBy,
     refetch,
-    setPage
+    setPage,
+    closeDrawer,
   } = props;
   const { fields } = useFields(activeField);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (search) { setPage(1) }
-    console.log(`Search ${activeField}: ${search}`);
+    if (search) {
+      setPage(1);
+      setFilterBy(`${LABELS[activeField]}: ${search}`);
+    }
     refetch();
     setSearch("");
     setActiveField("product");
+    closeDrawer();
   };
 
   const onResetClick = () => {
+    setFilterBy("");
     setActiveField("product");
-    setSearch('');
-    refetch();
+    setSearch("");
   };
 
   const onSelectChange = (e) => {
@@ -32,35 +46,61 @@ export default function ProductFilter(props) {
   };
 
   return (
-    <form id="product_filter" onSubmit={onSubmit}>
-      <div>Фильтровать по: </div>
-      <select
-        name="filter_select"
-        value={activeField}
-        id="filter_select"
-        onChange={onSelectChange}
-      >
-        <option value="product">Наименование</option>
-        <option value="brand">Бренд</option>
-        <option value="price">Цена</option>
-      </select>
-      <input
-        type="text"
-        name={activeField}
-        id={activeField}
-        list={`${activeField}-list`}
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      <datalist id={`${activeField}-list`}>
-        {!!fields &&
-          fields.length &&
-          fields.map((fld, i) => <option key={`${i}_${fld}`} value={fld} />)}
-      </datalist>
-      <button type="submit">Искать</button>
-      <button type="button" onClick={onResetClick}>
-        Сбросить
-      </button>
-    </form>
+    <div className={s.container}>
+      <div className={s.header_box}>
+        <h3 className={s.header}>Фильтр</h3>
+        <CloseButton onClick={closeDrawer} />
+      </div>
+
+      <form className={s.filter} id="filter_form" onSubmit={onSubmit}>
+        <fieldset className={s.filter}>
+          <FilterItem
+            label={LABELS.product}
+            name="product"
+            onSelectChange={onSelectChange}
+            checked={activeField === "product"}
+            value={search}
+            onValueChange={(e) => setSearch(e.target.value)}
+          />
+
+          <FilterItem
+            label={LABELS.brand}
+            name="brand"
+            onSelectChange={onSelectChange}
+            checked={activeField === "brand"}
+            value={search}
+            onValueChange={(e) => setSearch(e.target.value)}
+          />
+
+          <FilterItem
+            label={LABELS.price}
+            name="price"
+            onSelectChange={onSelectChange}
+            checked={activeField === "price"}
+            value={search}
+            onValueChange={(e) => setSearch(e.target.value)}
+          />
+        </fieldset>
+
+        <datalist id={`${activeField}-list`}>
+          {!!fields &&
+            fields.length &&
+            fields.map((fld, i) => <option key={`${i}_${fld}`} value={fld} />)}
+        </datalist>
+
+        <button className={s.submit} type="submit">
+          Искать
+        </button>
+
+        <button
+          className={s.reset}
+          type="button"
+          onClick={onResetClick}
+          onBlur={closeDrawer}
+        >
+          Сбросить
+        </button>
+      </form>
+    </div>
   );
 }

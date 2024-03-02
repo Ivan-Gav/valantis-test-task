@@ -1,4 +1,6 @@
-// import { useEffect } from 'react';
+import { useState } from "react";
+import Drawer from "react-modern-drawer";
+import "react-modern-drawer/dist/index.css";
 import Pagination from "../components/Pagination/Pagination";
 import ProductList from "../components/ProductList/ProductList";
 import useIDs from "../hooks/useIDs";
@@ -8,45 +10,65 @@ import useProducts from "../hooks/useProducts";
 import ProductFilter from "../components/ProductFilter/ProductFilter";
 
 function CatalogPage() {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const {
     ids,
     isLoading: isIDsFetching,
     activeField,
     setActiveField,
-    // resetFilter,
     search,
     setSearch,
+    filterBy,
+    setFilterBy,
     refetch,
   } = useIDs();
   const { page, setPage, totalPages, idsToDisplay } = usePagination(ids);
   const { products, isLoading } = useProducts(idsToDisplay);
 
-  // useEffect(() => console.log(`ids changed and ids.length=${ids.length}`), [ids]);
-  // useEffect(() => console.log(`products changed and products.length=${products.length}`), [products]);
-  // useEffect(() => console.log(`idsToDisplay changed and idsToDisplay.length=${idsToDisplay.length}`), [idsToDisplay]);
-
   const display = {
     loader: isIDsFetching || isLoading,
-    products: !(isIDsFetching || isLoading) && !!ids.length && !!products.length,
-    notFound: !(isIDsFetching || isLoading) && (!ids.length || !products.length),
+    products:
+      !(isIDsFetching || isLoading) && !!ids.length && !!products.length,
+    notFound:
+      !(isIDsFetching || isLoading) && (!ids.length || !products.length),
     pagination: !isIDsFetching && totalPages > 1,
   };
 
+  const closeDrawer = () => setIsDrawerOpen(false);
+
+  const clearFilter = () => {
+    setFilterBy("");
+    setActiveField("product");
+    setSearch("");
+    refetch();
+  };
+
   const filterProps = {
-    ids,
     activeField,
     setActiveField,
-    // resetFilter,
     search,
     setSearch,
+    setFilterBy,
     refetch,
     setPage,
+    closeDrawer,
   };
 
   return (
     <>
       <h1>Hello Valantis!</h1>
-      <ProductFilter {...filterProps} />
+      <button onClick={() => setIsDrawerOpen(true)}>Фильтр</button>
+      {!!filterBy && <button onClick={clearFilter}>{filterBy} x</button>}
+      <Drawer
+        open={isDrawerOpen}
+        onClose={closeDrawer}
+        direction="left"
+        size="auto"
+        lockBackgroundScroll={true}
+      >
+        <ProductFilter {...filterProps} />
+      </Drawer>
       {display.loader && <h2>Loading...</h2>}
       {display.notFound && <h2>Nothing found</h2>}
       {display.products && <ProductList ids={products} />}
