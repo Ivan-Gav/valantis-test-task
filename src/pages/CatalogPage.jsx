@@ -81,6 +81,7 @@ function CatalogPage() {
           page={page}
           totalPages={totalPages}
           onPageChange={setPage}
+          isLoading={isLoading}
         />
       )}
     </>

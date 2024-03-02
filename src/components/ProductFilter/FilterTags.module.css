@@ -1,9 +1,9 @@
 .container {
   width: 100%;
-  
   display: flex;
   align-items: center;
   gap: 1rem;
+  padding-block: 1rem;
 }
 
 .filter_btn,
@@ -23,8 +23,11 @@
   transition: background-color 0.3s;
 }
 
+.filter_btn:focus,
+.filter_btn:focus-visible,
 .filter_btn:hover {
   background-color: var(--color-brand);
+  outline: none;
 }
 
 .clear_btn {
@@ -40,7 +43,7 @@
 }
 
 .clear_btn svg {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   background-color: transparent;
   color: inherit;
   border-radius: 100vw;
@@ -51,6 +54,8 @@
   transition-duration: 0.3s;
 }
 
+.clear_btn:focus svg,
+.clear_btn:focus-visible svg,
 .clear_btn:hover svg {
   background-color: var(--color-brand);
   color: var(--color-bg-1);
