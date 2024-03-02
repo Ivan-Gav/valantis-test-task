@@ -11,7 +11,7 @@ export default function useProducts(ids) {
 
   useEffect(() => {
     if (error) {
-      console.log(`К сожалению после нескольких попыток загрузки ошибка остается: ${error.message}`)
+      console.log(`К сожалению, после нескольких попыток загрузки ошибка остается: ${error.message}`)
     }
   }, [error])
 
