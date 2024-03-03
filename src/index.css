@@ -1,7 +1,7 @@
 @font-face {
   font-family:'Circe';
-  src: url('fonts/Circe-Regular.woff2') format('woff2'),
-  url('fonts/Circe-Regular.woff') format('woff');
+  src: url('/fonts/Circe-Regular.woff2') format('woff2'),
+  url('/fonts/Circe-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -10,8 +10,8 @@
 
 @font-face {
   font-family:'Circe';
-  src: url('fonts/Circe-Bold.woff2') format('woff2'),
-  url('fonts/Circe-Bold.woff') format('woff');
+  src: url('/fonts/Circe-Bold.woff2') format('woff2'),
+  url('/fonts/Circe-Bold.woff') format('woff');
   font-weight: bold;
   font-style: normal;
   font-stretch: normal;
@@ -20,8 +20,8 @@
 
 @font-face {
   font-family:'Manrope';
-  src: url('fonts/Manrope-Bold.woff2') format('woff2'),
-  url('fonts/Manrope-Bold.woff') format('woff');
+  src: url('/fonts/Manrope-Bold.woff2') format('woff2'),
+  url('/fonts/Manrope-Bold.woff') format('woff');
   font-weight: bold;
   font-style: normal;
   font-stretch: normal;
