@@ -6,22 +6,6 @@ const API_URL = "http://api.valantis.store:40000/";
 const API_KEY = "Valantis";
 const timestamp = getTimestamp();
 
-// export const getIDs = async () => {
-//   const { data } = await axios.post(
-//     API_URL,
-//     {
-//       action: "get_ids",
-//     },
-//     {
-//       headers: {
-//         "Content-Type": "application/json",
-//         "X-Auth": md5(`${API_KEY}_${timestamp}`),
-//       },
-//     }
-//   );
-//   return data.result;
-// };
-
 const getFilteredIdDublicates = (data, length) => {
   let filtered = [];
   if (data && data.length > length) {
@@ -80,9 +64,18 @@ export const getFields = async (field) => {
         },
       }
     );
+
+    // убрать дубликаты, цены сортировать по возрастанию, остальные - в алфавитном порядке,
+    // для брендов добавить вариант "не указан"
+    //
     const result =
-      typeof data.result[0] === "number"
+      field === "price"
         ? [...new Set(data.result)].sort((a, b) => a - b)
+        : field === "brand"
+        ? [
+            "не указан",
+            ...[...new Set(data.result)].filter((item) => item !== null).sort(),
+          ]
         : [...new Set(data.result)].sort();
     return result;
   } catch (error) {
@@ -96,10 +89,16 @@ export const getFields = async (field) => {
 
 export const getFilteredIDs = async (field, value) => {
   try {
+    // сбросить фильтр если значение поиска не указано
     const reqField = value ? field : "product";
+
+    // для цены тип "number" для остальных строка
+    // бренд "не указан" соответствует null в ответе сервера
     const reqValue =
-      field !== "product" && !isNaN(value) && Number(value) !== 0
+      reqField === "price"
         ? Number(value)
+        : reqField === "brand" && value === "не указан"
+        ? null
         : value;
 
     const { data } = await axios.post(
@@ -125,3 +124,20 @@ export const getFilteredIDs = async (field, value) => {
     throw new Error(`problem with fetching ids: ${output}`);
   }
 };
+
+// "get_ids" не использовал, "filter" по продукту с пустым значением делает то же.
+// export const getIDs = async () => {
+//   const { data } = await axios.post(
+//     API_URL,
+//     {
+//       action: "get_ids",
+//     },
+//     {
+//       headers: {
+//         "Content-Type": "application/json",
+//         "X-Auth": md5(`${API_KEY}_${timestamp}`),
+//       },
+//     }
+//   );
+//   return data.result;
+// };

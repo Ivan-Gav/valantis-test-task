@@ -1,4 +1,3 @@
-import useFields from "../../hooks/useFields";
 import s from "./ProductFilter.module.css";
 import FilterItem from "./FilterItem";
 import CloseButton from "../../ui/CloseButton/CloseButton";
@@ -20,7 +19,6 @@ export default function ProductFilter(props) {
     setPage,
     closeDrawer,
   } = props;
-  const { fields } = useFields(activeField);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -38,6 +36,7 @@ export default function ProductFilter(props) {
     setFilterBy("");
     setActiveField("product");
     setSearch("");
+    closeDrawer();
   };
 
   const onSelectChange = (e) => {
@@ -81,12 +80,6 @@ export default function ProductFilter(props) {
             onValueChange={(e) => setSearch(e.target.value)}
           />
         </fieldset>
-
-        <datalist id={`${activeField}-list`}>
-          {!!fields &&
-            fields.length &&
-            fields.map((fld, i) => <option key={`${i}_${fld}`} value={fld} />)}
-        </datalist>
 
         <button className={s.submit} type="submit">
           Искать
