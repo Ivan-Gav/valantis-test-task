@@ -3,7 +3,13 @@ import "./App.css";
 import CatalogPage from "./pages/CatalogPage";
 import Footer from "./components/Footer/Footer";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   return (

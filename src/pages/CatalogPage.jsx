@@ -44,6 +44,7 @@ function CatalogPage() {
     setFilterBy("");
     setActiveField("product");
     setSearch("");
+    setPage(1)
     refetch();
   };
 
