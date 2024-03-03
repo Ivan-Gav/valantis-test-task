@@ -21,7 +21,7 @@
 }
 
 .label::after {
-  content: url("icons/expand.svg");
+  content: url("/icons/expand.svg");
   color: var(--color-txt-dim);
   transform: rotate(180deg);
   transform-origin: center;
