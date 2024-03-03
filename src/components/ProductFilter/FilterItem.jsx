@@ -41,7 +41,7 @@ export default function FilterItem(props) {
           onChange={onValueChange}
           disabled={!checked}
         >
-          <option selected disabled></option>
+          <option disabled></option>
           {!!fields &&
             fields.length &&
             fields.map((fld, i) => (
