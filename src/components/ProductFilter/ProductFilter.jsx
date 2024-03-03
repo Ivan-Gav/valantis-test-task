@@ -36,7 +36,7 @@ export default function ProductFilter(props) {
     setFilterBy("");
     setActiveField("product");
     setSearch("");
-    closeDrawer();
+    // closeDrawer();
   };
 
   const onSelectChange = (e) => {
@@ -89,7 +89,11 @@ export default function ProductFilter(props) {
           className={s.reset}
           type="button"
           onClick={onResetClick}
-          onBlur={closeDrawer}
+          onKeyDown={(e) => {
+            if(e.code === "Tab") {
+              closeDrawer()
+            }
+          }}
         >
           Сбросить
         </button>
