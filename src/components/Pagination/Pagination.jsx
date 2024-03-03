@@ -1,31 +1,8 @@
 import { useEffect, useState } from "react";
 import s from "./Pagination.module.css";
 
-const Prev = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="1.2em"
-      height="1.2em"
-      viewBox="0 0 20 20"
-    >
-      <path fill="currentColor" d="m4 10l9 9l1.4-1.5L7 10l7.4-7.5L13 1z" />
-    </svg>
-  );
-};
-
-const Next = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="1.2em"
-      height="1.2em"
-      viewBox="0 0 20 20"
-    >
-      <path fill="currentColor" d="M7 1L5.6 2.5L13 10l-7.4 7.5L7 19l9-9z" />
-    </svg>
-  );
-};
+import Prev from "../../ui/SVG/PrevSVG";
+import Next from "../../ui/SVG/NextSVG";
 
 export default function Pagination(props) {
   const { page, totalPages, onPageChange, isLoading } = props;

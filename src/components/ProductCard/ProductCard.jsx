@@ -9,7 +9,7 @@ export default function ProductCard(props) {
       <p className={s.brand}>{brand || " "}</p>
       <p className={s.id}>Арт.: {id}</p>
       <p className={s.price}>
-        {price}
+        {new Intl.NumberFormat("ru-RU").format(price)}
         <span> ₽</span>
       </p>
     </div>
