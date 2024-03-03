@@ -1,0 +1,63 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 1rem;
+}
+
+.filter_btn,
+.clear_btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 100vw;
+  min-width: 7.5rem;
+  overflow: hidden;
+}
+
+.filter_btn {
+  padding-inline: 1rem 1.5rem;
+  background-color: var(--color-txt-base);
+  color: var(--color-bg-1);
+  transition: background-color 0.3s;
+}
+
+.filter_btn:focus,
+.filter_btn:focus-visible,
+.filter_btn:hover {
+  background-color: var(--color-brand);
+  outline: none;
+}
+
+.clear_btn {
+  padding-inline: 1rem 0.8rem;
+}
+
+.clear_btn span {
+  flex-basis: 4rem;
+  flex-grow: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.clear_btn svg {
+  font-size: 1.1rem;
+  background-color: transparent;
+  color: inherit;
+  border-radius: 100vw;
+  padding: 0.1rem;
+  transform: rotate(0deg);
+  transform-origin: center;
+  transition: background-color, color, transform;
+  transition-duration: 0.3s;
+}
+
+.clear_btn:focus svg,
+.clear_btn:focus-visible svg,
+.clear_btn:hover svg {
+  background-color: var(--color-brand);
+  color: var(--color-bg-1);
+  transform: rotate(90deg);
+}

@@ -1,0 +1,20 @@
+.footer {
+  width: 100%;
+  min-height: 3rem;
+  margin-top: 1rem;
+  padding-inline: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-bg-2);
+  color: var(--color-txt-dim);
+}
+
+.copyright {
+  display: flex;
+  align-items: center;
+}
+
+.gitlink {
+  display: flex;
+}
